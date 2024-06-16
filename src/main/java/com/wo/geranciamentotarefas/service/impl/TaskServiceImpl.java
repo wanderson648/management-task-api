@@ -2,6 +2,7 @@ package com.wo.geranciamentotarefas.service.impl;
 
 import com.wo.geranciamentotarefas.dto.TaskDto;
 import com.wo.geranciamentotarefas.enums.Status;
+import com.wo.geranciamentotarefas.exception.NotFoundException;
 import com.wo.geranciamentotarefas.model.Task;
 import com.wo.geranciamentotarefas.repository.TaskRepository;
 import com.wo.geranciamentotarefas.service.TaskService;
@@ -39,13 +40,13 @@ public class TaskServiceImpl implements TaskService {
                     task.setDtCreation(LocalDateTime.now());
 
                     return taskRepository.save(task);
-                }).switchIfEmpty(Mono.error(() -> new RuntimeException("Task Not found"))).then();
+                }).switchIfEmpty(Mono.error(() -> new NotFoundException("Task Not found"))).then();
     }
 
     @Override
     public Mono<Void> delete(String taskId) {
         Mono<Task> taskMono = taskRepository.findById(taskId)
-                .switchIfEmpty(Mono.error(() -> new RuntimeException("Task Not found")));
+                .switchIfEmpty(Mono.error(() -> new NotFoundException("Task Not found")));
 
         return taskMono.flatMap(taskRepository::delete).then();
     }
@@ -58,7 +59,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Mono<Task> changeTaskStatus(String taskId) {
         Mono<Task> taskMono = taskRepository.findById(taskId)
-                .switchIfEmpty(Mono.error(() -> new RuntimeException("Task Not found")));
+                .switchIfEmpty(Mono.error(() -> new NotFoundException("Task Not found")));
 
         return taskMono.flatMap(this::changeStatus);
     }
