@@ -11,4 +11,5 @@ public interface TaskService {
     Mono<Void> updateTask(String taskId, TaskDto taskDto);
     Mono<Void> delete(String taskId);
     Flux<Task> findAllByStatus(String status);
+    Mono<Task> changeTaskStatus(String taskId);
 }

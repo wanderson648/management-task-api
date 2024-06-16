@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
+
     @Override
     public Mono<Task> create(TaskDto taskDto) {
         return taskRepository.save(new Task(taskDto));
@@ -51,6 +52,23 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Flux<Task> findAllByStatus(String status) {
-        return null;
+        return taskRepository.findAllByStatus(status);
+    }
+
+    @Override
+    public Mono<Task> changeTaskStatus(String taskId) {
+        Mono<Task> taskMono = taskRepository.findById(taskId)
+                .switchIfEmpty(Mono.error(() -> new RuntimeException("Task Not found")));
+
+        return taskMono.flatMap(this::changeStatus);
+    }
+
+    private Mono<Task> changeStatus(Task task) {
+        if (task.getStatus().equals(Status.COMPLETED)) {
+            task.setStatus(Status.NOT_COMPLETED);
+        } else {
+            task.setStatus(Status.COMPLETED);
+        }
+        return taskRepository.save(task);
     }
 }

@@ -44,4 +44,9 @@ public class TaskController {
             @RequestParam(value = "status", required = false, defaultValue = "") String status) {
         return ResponseEntity.status(HttpStatus.OK).body(taskService.findAllByStatus(status));
     }
+
+    @PatchMapping("/status/{taskId}")
+    public ResponseEntity<Mono<Task>> changeTaskStatus(@PathVariable("taskId") String taskId) {
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(taskService.changeTaskStatus(taskId));
+    }
 }
