@@ -1,1 +1,8 @@
-spring.application.name=geranciamento-tarefas 
+server:
+  port: 8080
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://admin:admin@task-desafio.qousaqi.mongodb.net/tasks?retryWrites=true&w=majority&appName=task-desafio
+  webflux:
+    base-path: /task-api
