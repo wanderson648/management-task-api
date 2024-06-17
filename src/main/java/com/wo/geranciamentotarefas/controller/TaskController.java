@@ -3,7 +3,6 @@ package com.wo.geranciamentotarefas.controller;
 import com.wo.geranciamentotarefas.dto.TaskDto;
 import com.wo.geranciamentotarefas.model.Task;
 import com.wo.geranciamentotarefas.service.TaskService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,7 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping
-    public ResponseEntity<Mono<Task>> createTask(@RequestBody @Valid TaskDto taskDto) {
+    public ResponseEntity<Mono<Task>> createTask(@RequestBody TaskDto taskDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(taskService.create(taskDto));
     }
 

@@ -25,7 +25,7 @@ public class Task {
     @NotBlank
     private String description;
 
-    @NotBlank
+
     private Status status = Status.NOT_COMPLETED;
 
     private LocalDateTime dtCreation;
